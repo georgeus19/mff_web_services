@@ -1,10 +1,8 @@
 package stockmarket;
 
-import java.util.Arrays;
-
 import javax.jws.WebService;
 
-@javax.jws.WebService
+@WebService(endpointInterface = "stockmarket.StockMarket")
 public class StockMarketImpl implements StockMarket {
 	
 	private StockList stockList;
