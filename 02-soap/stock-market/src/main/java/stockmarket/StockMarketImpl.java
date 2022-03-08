@@ -12,11 +12,11 @@ public class StockMarketImpl implements StockMarket {
 		this.stockList = stockList;
 	}
 
-	public StockList showAvailableStocks() {
+	public StockList ShowAvailableStocks() {
 		return stockList;		
 	}
 	
-	public AvailableStock buyStocks(int id, int count) {
+	public AvailableStock BuyStocks(int id, int count) {
 		return stockList.getStocks(id, count);
 	}
 
