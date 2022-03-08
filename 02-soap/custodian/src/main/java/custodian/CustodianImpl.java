@@ -10,5 +10,9 @@ public class CustodianImpl implements Custodian {
 	public String StoreStocks(int stockId) {
 		return "Stock " + stockId + " stored.";
 	}
+	
+	public String RemoveStocks(int stockId) {
+		return "Stock " + stockId + " removed from storage.";
+	}
 
 }
