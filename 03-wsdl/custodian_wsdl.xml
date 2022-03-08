@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wsdl:definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://custodian/"
+  targetNamespace="http://custodian/">
+	<wsdl:types>
+	 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				targetNamespace="http://custodian/" >
+	 <xs:element name="StoreStock" form="qualified">
+		  <xs:complexType>
+		  <xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="1" name="arg0" type="xs:int"/>
+		  </xs:sequence>
+		  </xs:complexType>
+	 </xs:element>
+	 <xs:element name="StoreStockResponse" form="qualified">
+		  <xs:complexType>
+		  <xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="1" name="return" type="xs:string"/>
+		  </xs:sequence>
+		  </xs:complexType>
+	 </xs:element>
+	 </xs:schema>
+	</wsdl:types>
+	<!-- messages (0,*) -->
+	<wsdl:message name="StoreStockMessage">
+		<wsdl:part name="parameters" element="tns:StoreStock"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="StoreStockResponseMessage">
+		<wsdl:part name="parameters" element="tns:StoreStockResponse"></wsdl:part>
+	</wsdl:message>
+	<!-- port types (0,*) -->
+	<wsdl:portType name="StoreStockPortType">
+        <wsdl:operation name="StoreStockOperation">
+            <wsdl:input message="tns:StoreStockMessage"/>
+            <wsdl:output message="tns:StoreStockResponseMessage"/>
+        </wsdl:operation>
+	</wsdl:portType>
+	<!-- bindings (0,*) -->
+	<wsdl:binding name="StoreStockBinding" type="tns:StoreStockPortType">
+        <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="StoreStockOperation">
+            <wsdlsoap:operation soapAction=""/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+	<!-- services (0,*) -->
+	<wsdl:service name="StoreStockService">
+        <wsdl:port binding="tns:StoreStockBinding" name="StoreStocksPort">
+            <wsdlsoap:address location="http://127.0.0.1:8000/Custodian"/>
+        </wsdl:port> 
+    </wsdl:service>
+</wsdl:definitions>
