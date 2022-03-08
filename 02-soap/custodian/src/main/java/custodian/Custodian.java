@@ -4,8 +4,8 @@ package custodian;
 public interface Custodian {
 
 	@javax.jws.WebMethod
-	public String StoreStocks(int stockId);
+	public String StoreStock(int stockId);
 	
 	@javax.jws.WebMethod
-	public String RemoveStocks(int stockId);
+	public String RemoveStock(int stockId);
 }

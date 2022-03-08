@@ -7,11 +7,11 @@ public class CustodianImpl implements Custodian {
 		
 	}
 	
-	public String StoreStocks(int stockId) {
+	public String StoreStock(int stockId) {
 		return "Stock " + stockId + " stored.";
 	}
 	
-	public String RemoveStocks(int stockId) {
+	public String RemoveStock(int stockId) {
 		return "Stock " + stockId + " removed from storage.";
 	}
 
