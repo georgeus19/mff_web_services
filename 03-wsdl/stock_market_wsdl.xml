@@ -12,9 +12,11 @@
             <xs:element name="ShowAvailableStocksResponse" form="qualified">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:complexType>
-                            <xs:element name="stocks" type="tns:stockType" minOccurs="0" maxOccurs="unbounded"/>
-                        </xs:complexType>
+                        <xs:element name="return">
+                            <xs:complexType>
+                                <xs:element name="stocks" type="tns:stockType" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:complexType>
+                        </xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -33,10 +35,28 @@
                     </xs:element>
                 </xs:sequence>
             </xs:complexType>
-            
+
+            <xs:element name="BuyStocks" form="qualified">
+		        <xs:complexType>
+		            <xs:sequence>
+				        <xs:element minOccurs="1" maxOccurs="1" name="arg0" type="xs:int"/>
+				        <xs:element minOccurs="1" maxOccurs="1" name="arg1" type="xs:int"/>
+		            </xs:sequence>
+		        </xs:complexType>
+	        </xs:element>
+
+            <xs:element name="BuyStocksResponse" form="qualified">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="return" type="tns:stockType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
         </xs:schema>
 	
     </wsdl:types>
+
 	<!-- messages (0,*) -->
 	<wsdl:message name="ShowAvailableStocksMessage">
 		<wsdl:part name="parameters" element="tns:ShowAvailableStocks"></wsdl:part>
@@ -45,18 +65,44 @@
 		<wsdl:part name="parameters" element="tns:ShowAvailableStocksResponse"></wsdl:part>
 	</wsdl:message>
 
+	<wsdl:message name="BuyStocksMessage">
+		<wsdl:part name="parameters" element="tns:BuyStocks"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="BuyStocksResponseMessage">
+		<wsdl:part name="parameters" element="tns:BuyStocksResponse"></wsdl:part>
+	</wsdl:message>
+
+
 	<!-- port types (0,*) -->
 	<wsdl:portType name="StockMarketPortType">
+
         <wsdl:operation name="ShowAvailableStocksOperation">
             <wsdl:input message="tns:ShowAvailableStocksMessage"/>
             <wsdl:output message="tns:ShowAvailableStocksResponseMessage"/>
         </wsdl:operation>
+
+        <wsdl:operation name="BuyStocksOperation">
+            <wsdl:input message="tns:BuyStocksMessage"/>
+            <wsdl:output message="tns:BuyStocksResponseMessage"/>
+        </wsdl:operation>
+
 	</wsdl:portType>
 
 	<!-- bindings (0,*) -->
 	<wsdl:binding name="StockMarketBinding" type="tns:StockMarketPortType">
         <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
         <wsdl:operation name="ShowAvailableStocksOperation">
+            <wsdlsoap:operation soapAction=""/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="BuyStocksOperation">
             <wsdlsoap:operation soapAction=""/>
             <wsdl:input>
                 <wsdlsoap:body use="literal"/>
