@@ -72,7 +72,6 @@
 		<wsdl:part name="parameters" element="tns:BuyStocksResponse"></wsdl:part>
 	</wsdl:message>
 
-
 	<!-- port types (0,*) -->
 	<wsdl:portType name="StockMarketPortType">
 
