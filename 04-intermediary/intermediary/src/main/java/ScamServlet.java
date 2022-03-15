@@ -56,14 +56,7 @@ public class ScamServlet extends HttpServlet {
 			SOAPHeader header = soapm.getSOAPHeader();
 			
 			Iterator it = header.examineAllHeaderElements();
-			SOAPHeaderElement scamHeader = (SOAPHeaderElement)it.next();
-			while (it.hasNext()) {
-				scamHeader = (SOAPHeaderElement)it.next();
-				if (scamHeader.getElementName().toString() == "scam") {
-					break;
-				}
-			}
-			
+			SOAPHeaderElement scamHeader = (SOAPHeaderElement)it.next();	
 			
 			Float increasePriceBy = Float.parseFloat(scamHeader.getAttribute("increasePriceBy"));
 			
