@@ -1,0 +1,35 @@
+<xs:schema xmlns:tns="http://custodiancxf/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://custodiancxf/" version="1.0">
+
+  <xs:element name="RemoveStock" type="tns:RemoveStock"/>
+
+  <xs:element name="RemoveStockResponse" type="tns:RemoveStockResponse"/>
+
+  <xs:element name="StoreStock" type="tns:StoreStock"/>
+
+  <xs:element name="StoreStockResponse" type="tns:StoreStockResponse"/>
+
+  <xs:complexType name="StoreStock">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="StoreStockResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RemoveStock">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RemoveStockResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

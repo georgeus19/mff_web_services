@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="CustodianImplService" targetNamespace="http://custodiancxf/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://custodiancxf/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://custodiancxf/" schemaLocation="custodianimpl_schema1.xsd"/>
+</schema>
+  </wsdl:types>
+  <wsdl:message name="StoreStockResponse">
+    <wsdl:part name="parameters" element="tns:StoreStockResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RemoveStock">
+    <wsdl:part name="parameters" element="tns:RemoveStock">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RemoveStockResponse">
+    <wsdl:part name="parameters" element="tns:RemoveStockResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="StoreStock">
+    <wsdl:part name="parameters" element="tns:StoreStock">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Custodian">
+    <wsdl:operation name="StoreStock">
+      <wsdl:input name="StoreStock" message="tns:StoreStock">
+    </wsdl:input>
+      <wsdl:output name="StoreStockResponse" message="tns:StoreStockResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveStock">
+      <wsdl:input name="RemoveStock" message="tns:RemoveStock">
+    </wsdl:input>
+      <wsdl:output name="RemoveStockResponse" message="tns:RemoveStockResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustodianImplServiceSoapBinding" type="tns:Custodian">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="StoreStock">
+      <soap:operation soapAction="urn:StoreStock" style="document"/>
+      <wsdl:input name="StoreStock">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="StoreStockResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveStock">
+      <soap:operation soapAction="urn:RemoveStock" style="document"/>
+      <wsdl:input name="RemoveStock">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="RemoveStockResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustodianImplService">
+    <wsdl:port name="CustodianImplPort" binding="tns:CustodianImplServiceSoapBinding">
+      <soap:address location="http://localhost:8080/CustodianCXF/services/CustodianImplPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
