@@ -61,7 +61,7 @@
 		</nodes>
 		<clerks registerOnStartup="true">
            <clerk name="georgeus" node="default" publisher="georgeus" password="wtz2trln" isPasswordEncrypted="false" cryptoProvider="">
-                <class>org.apache.juddi.example.HelloWorldImpl</class>
+                <class>custodian.CustodianImpl</class>
            </clerk>
         </clerks>
 		<signature>

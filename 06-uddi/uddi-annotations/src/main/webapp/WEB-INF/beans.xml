@@ -23,7 +23,7 @@
   <import resource="classpath:META-INF/cxf/cxf.xml" />
   <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
   
-  <jaxws:endpoint id="helloworld" implementor="org.apache.juddi.example.HelloWorldImpl" 
-     address="/helloworld" />
+  <jaxws:endpoint id="custodian" implementor="custodian.CustodianImpl" 
+     address="/custodian" />
 
 </beans>
