@@ -7,19 +7,27 @@
 	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
 	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
-	targetNamespace="http://BuyStocks/wsdl">
+	xmlns:sm="http://stockmarket/"
+	targetNamespace="http://BuyStocks/wsdl"
+	>
 
-	<!-- <wsdl:import location="StockMarket.wsdl"
-	namespace="http://stockmarket/" /> -->
+	<wsdl:import location="StockMarket.wsdl"
+	namespace="http://stockmarket/" />
   
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://BuyStocks/xsd">
             <xsd:element name="BuyStocksIn">
 		        <xsd:complexType>
-		            <xsd:sequence>
-				        <xsd:element minOccurs="1" name="stockId" type="xsd:int"/>
-				        <xsd:element minOccurs="1" name="stockCount" type="xsd:int"/>
-		            </xsd:sequence>
+					<xsd:sequence>
+						<xsd:element name="stock" minOccurs="1" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element minOccurs="1" name="stockId" type="xsd:int"/>
+									<xsd:element minOccurs="1" name="stockCount" type="xsd:int"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
 		        </xsd:complexType>
 	        </xsd:element>
             <xsd:element name="BuyStocksOut">
@@ -39,20 +47,20 @@
 		<wsdl:part name="parameters" element="tnsxsd:BuyStocksOut"/>
 	</wsdl:message>
 
-	<wsdl:portType name="BuyStocksPortType">
+	<wsdl:portType name="StocksPortType">
 		<wsdl:operation name="BuyStocksOperation">
 			<wsdl:input name="BuyStocksIn" message="tns:BuyStocksInputMessage"/>
 			<wsdl:output name="BuyStocksOut" message="tns:BuyStocksOutputMessage"/>
 		</wsdl:operation>
 	</wsdl:portType>
 
-	<!-- <wsdl:portType name="MultiplyResponsePortType">
-		<wsdl:operation name="multiplyOperation">
-			<wsdl:input name="Calculator" message="c:MultiplySoapOut"/>
+	<wsdl:portType name="StockMarketStocksPortType">
+		<wsdl:operation name="BuyStocksFromStockMarket">
+			<wsdl:input name="BuyStocksIn" message="sm:BuyStocksResponse"/>
 		</wsdl:operation>
-	</wsdl:portType> -->
+	</wsdl:portType>
 
-	<wsdl:binding name="BuyStocksSOAPBinding" type="tns:BuyStocksPortType">
+	<wsdl:binding name="StocksSOAPBinding" type="tns:StocksPortType">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 		<wsdl:operation name="BuyStocksOperation">
 			<soap:operation soapAction="urn:BuyStocks" style="document"/>
@@ -65,34 +73,34 @@
 		</wsdl:operation>
 	</wsdl:binding>
 	
-	<!-- <wsdl:binding name="MultiSOAPBinding" type="tns:MultiplyResponsePortType">
+	<wsdl:binding name="StockMarketStocksSOAPBinding" type="tns:StockMarketStocksPortType">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-		<wsdl:operation name="multiplyOperation">
-			<soap:operation soapAction="urn:multiplyResponseOperation" style="document"/>
+		<wsdl:operation name="BuyStocksFromStockMarket">
+			<soap:operation soapAction="urn:BuyStocksFromStockMarketResponseOperation" style="document"/>
 			<wsdl:input>
 				<soap:body use="literal"/>
 			</wsdl:input>
 		</wsdl:operation>
-	</wsdl:binding> -->
+	</wsdl:binding>
 
 
-	<wsdl:service name="BuyStocksService">
-		<wsdl:port name="BuyStocksPort" binding="tns:BuyStocksSOAPBinding">
-			<soap:address location="http://localhost:8080/ode/processes/BuyStocks"/>
+	<wsdl:service name="StocksService">
+		<wsdl:port name="StocksPort" binding="tns:StocksSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/Stocks"/>
 		</wsdl:port>
-		<!-- <wsdl:port name="MultPort" binding="tns:MultiSOAPBinding">
-			<soap:address location="http://localhost:8080/ode/processes/CustomCalcMuli"/>
-		</wsdl:port> -->
+		<wsdl:port name="StockMarketStocksPort" binding="tns:StockMarketStocksSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/StockMarketStocks"/>
+		</wsdl:port>
 	</wsdl:service>
 
 	<!--
     Declares a link type connecting a client with this service via CalcPortType 
   -->
 	<plnk:partnerLinkType name="BuyStocksLinkType">
-		<plnk:role name="BuyStocksExecutorRole" portType="tns:BuyStocksPortType"/>
+		<plnk:role name="BuyStocksExecutorRole" portType="tns:StocksPortType"/>
 	</plnk:partnerLinkType>
-	<!-- <plnk:partnerLinkType name="MultiplyLinkType">
-		<plnk:role name="MultiplierRole" portType="c:CalculatorSoap"/>
-		<plnk:role name="MultiplierClientRole" portType="tns:MultiplyResponsePortType"/>
-	</plnk:partnerLinkType> -->
+	<plnk:partnerLinkType name="BuyStocksFromStockMarketLinkType">
+		<plnk:role name="StockMarketRole" portType="sm:StockMarket"/>
+		<plnk:role name="BuyStocksFromStockMarketClientRole" portType="tns:StockMarketStocksPortType"/>
+	</plnk:partnerLinkType>
 </wsdl:definitions>
