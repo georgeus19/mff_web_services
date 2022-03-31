@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<deploy 
+    xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+    xmlns:tnsbpel="http://BuyStocks/bpel"
+    xmlns:tnswsdl="http://BuyStocks/wsdl">
+
+  <process name="tnsbpel:BuyStocksProcess">
+    <active>true</active>
+    <provide partnerLink="BuyStocksLink">
+      <service name="tnswsdl:BuyStocksService" port="BuyStocksPort" />
+    </provide>
+    <!-- <invoke partnerLink="MultiplyLink">
+      <service name="c:Calculator" port="CalculatorSoap" />
+    </invoke>
+    <provide partnerLink="MultiplyLink">
+      <service name="tnswsdl:CustomCalcService" port="MultPort" />
+    </provide> -->
+  </process>
+
+</deploy>

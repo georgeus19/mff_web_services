@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<process name="BuyStocksProcess"
+    targetNamespace="http://BuyStocks/bpel" 
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:tns="http://BuyStocks/bpel"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tnswsdl="http://BuyStocks/wsdl"
+    xmlns:tnsxsd="http://BuyStocks/xsd"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+
+  <import location="BuyStocksProcess.wsdl"
+      namespace="http://BuyStocks/wsdl"
+      importType="http://schemas.xmlsoap.org/wsdl/" />
+  
+  <partnerLinks>
+    <partnerLink name="BuyStocksLink" 
+        partnerLinkType="tnswsdl:BuyStocksLinkType" 
+        myRole="BuyStocksExecutorRole" />
+    <!-- <partnerLink name="MultiplyLink" 
+      partnerLinkType="tnswsdl:MultiplyLinkType" 
+      myRole="MultiplierClientRole"
+      partnerRole="MultiplierRole" /> -->
+  </partnerLinks>
+
+
+  
+  <variables>
+    <variable name="inputMessage" messageType="tnswsdl:BuyStocksInputMessage" />
+    <!-- <variable name="inputNumber" type="xsd:integer" />
+    <variable name="multiplyRequestElement" element="c:Multiply"/>
+    <variable name="multiplyRequestMessage" messageType="c:MultiplySoapIn"/>
+    <variable name="multiplyResponseMessage" messageType="c:MultiplySoapOut"/>
+    <variable name="multiplyResponseElement" element="c:MultiplyResponse"/> -->
+    <variable name="outputMessage" messageType="tnswsdl:BuyStocksOutputMessage" />
+  </variables>
+  
+  <sequence>
+  
+    <receive
+        name="ReceiveBuyStocksInputs"
+        partnerLink="BuyStocksLink"
+        portType="tnswsdl:BuyStocksPortType"
+        operation="BuyStocksOperation"
+        variable="inputMessage"
+        createInstance="yes" />
+
+    <!-- <assign name="ParseInput">
+    	<copy>
+    		<from variable="inputMessage" part="parameters"/>
+    		<to variable="inputNumber"/>
+    	</copy>
+    </assign> -->
+
+    <!-- <assign name="InitMultiplyRequest">
+      <copy>
+        <from>
+          <literal>
+            <c:Multiply>
+              <c:intA></c:intA>
+              <c:intB></c:intB>
+            </c:Multiply>
+          </literal>
+        </from>
+        <to variable="multiplyRequestElement" />
+      </copy>
+      <copy>
+        <from>$inputNumber</from>
+        <to>$multiplyRequestElement/c:intA</to>
+      </copy>
+      <copy>
+        <from>$inputNumber</from>
+        <to>$multiplyRequestElement/c:intB</to>
+      </copy>
+      <copy>
+        <from variable="multiplyRequestElement" />
+        <to variable="multiplyRequestMessage" part="parameters" />
+      </copy>
+    </assign> -->
+
+
+    <!-- <invoke
+        name="InvokeMultiplication"
+        partnerLink="MultiplyLink"
+        operation="Multiply"
+        inputVariable="multiplyRequestMessage"
+        outputVariable="multiplyResponseMessage"
+    /> -->
+    
+
+    <!-- <assign name="CopyAssign">
+      <copy>
+        <from variable="multiplyResponseMessage" part="parameters"/>
+        <to variable="multiplyResponseElement"/>
+      </copy>
+      <copy>
+        <from>$multiplyResponseElement/c:MultiplyResult</from>
+        <to variable="outputNumber" part="parameters" />
+      </copy>
+    </assign> -->
+
+    <assign>
+        <copy>
+            <from> 
+                <literal>
+                    <tns:BuyStocksOut>
+                        <tns:storeMessage>Stored Dummy</tns:storeMessage>
+                    </tns:BuyStocksOut>
+
+                </literal>
+            </from>
+            <to variable="outputMessage" part="parameters"/>
+        </copy>
+    </assign>
+    
+    <reply name="ReplyBuyStocksOutputs"  
+        partnerLink="BuyStocksLink"
+        portType="tnswsdl:BuyStocksPortType" 
+        operation="BuyStocksOperation"
+        variable="outputMessage" />
+    
+  </sequence>
+  
+</process>
