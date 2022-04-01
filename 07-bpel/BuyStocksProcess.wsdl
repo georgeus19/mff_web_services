@@ -119,7 +119,7 @@
 	<plnk:partnerLinkType name="BuyStocksLinkType">
 		<plnk:role name="BuyStocksExecutorRole" portType="tns:StocksPortType"/>
 	</plnk:partnerLinkType>
-	<plnk:partnerLinkType name="BuyStocksFromStockMarketLinkType">
+	<plnk:partnerLinkType name="BuyStocksFromAmsterdamStockMarketLinkType">
 		<plnk:role name="StockMarketRole" portType="sm:StockMarket"/>
 		<plnk:role name="BuyStocksFromStockMarketClientRole" portType="tns:StockMarketStocksPortType"/>
 	</plnk:partnerLinkType>

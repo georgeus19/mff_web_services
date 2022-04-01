@@ -13,10 +13,10 @@
       <service name="tnswsdl:StocksService" port="StocksPort" />
     </provide>
 
-    <invoke partnerLink="BuyStocksFromStockMarketLink">
-      <service name="sm:StockMarketImplService" port="StockMarketImplPort" />
+    <invoke partnerLink="BuyStocksFromAmsterdamStockMarketLink">
+      <service name="sm:StockMarketImplService" port="AmsterdamStockMarketPort" />
     </invoke>
-    <provide partnerLink="BuyStocksFromStockMarketLink">
+    <provide partnerLink="BuyStocksFromAmsterdamStockMarketLink">
       <service name="tnswsdl:StocksService" port="StockMarketStocksPort" />
     </provide>
 

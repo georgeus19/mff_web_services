@@ -21,8 +21,8 @@
         partnerLinkType="tnswsdl:BuyStocksLinkType" 
         myRole="BuyStocksExecutorRole" />
     
-    <bpel:partnerLink name="BuyStocksFromStockMarketLink" 
-      partnerLinkType="tnswsdl:BuyStocksFromStockMarketLinkType" 
+    <bpel:partnerLink name="BuyStocksFromAmsterdamStockMarketLink" 
+      partnerLinkType="tnswsdl:BuyStocksFromAmsterdamStockMarketLinkType" 
       myRole="BuyStocksFromStockMarketClientRole"
       partnerRole="StockMarketRole" />
 
@@ -41,10 +41,10 @@
     <bpel:variable name="buyStocksInputMessage" messageType="tnswsdl:BuyStocksInputMessage" />
     <bpel:variable name="buyStocksInElement" element="tnswsdl:BuyStocksIn" />
 
-    <bpel:variable name="stockMarketBuyStocksRequestElement" element="sm:BuyStocks" />
-    <bpel:variable name="stockMarketBuyStocksRequestMessage" messageType="sm:BuyStocks" />
-    <bpel:variable name="stockMarketBuyStocksResponseMessage" messageType="sm:BuyStocksResponse" />
-    <bpel:variable name="stockMarketBuyStocksResponseElement" element="sm:BuyStocksResponse" />
+    <bpel:variable name="amsterdamStockMarketBuyStocksRequestElement" element="sm:BuyStocks" />
+    <bpel:variable name="amsterdamStockMarketBuyStocksRequestMessage" messageType="sm:BuyStocks" />
+    <bpel:variable name="amsterdamStockMarketBuyStocksResponseMessage" messageType="sm:BuyStocksResponse" />
+    <bpel:variable name="amsterdamStockMarketBuyStocksResponseElement" element="sm:BuyStocksResponse" />
 
 
     <bpel:variable name="londonStockMarketBuyStocksRequestElement" element="sm:BuyStocks" />
@@ -80,7 +80,7 @@
 
     <bpel:flow>
         <bpel:sequence>
-            <bpel:assign name="InitStockMarketBuyStocksRequestMessage">
+            <bpel:assign name="InitAmsterdamStockMarketBuyStocksRequestMessage">
             <bpel:copy>
                 <bpel:from>
                 <bpel:literal>
@@ -90,28 +90,28 @@
                     </sm:BuyStocks>
                 </bpel:literal>
                 </bpel:from>
-                <bpel:to variable="stockMarketBuyStocksRequestElement" />
+                <bpel:to variable="amsterdamStockMarketBuyStocksRequestElement" />
             </bpel:copy>
             <bpel:copy>
                 <bpel:from>$buyStocksInElement/stock[1]/stockId</bpel:from>
-                <bpel:to>$stockMarketBuyStocksRequestElement/arg0</bpel:to>
+                <bpel:to>$amsterdamStockMarketBuyStocksRequestElement/arg0</bpel:to>
             </bpel:copy>
             <bpel:copy>
                 <bpel:from>$buyStocksInElement/stock[1]/stockCount</bpel:from>
-                <bpel:to>$stockMarketBuyStocksRequestElement/arg1</bpel:to>
+                <bpel:to>$amsterdamStockMarketBuyStocksRequestElement/arg1</bpel:to>
             </bpel:copy>
             <bpel:copy>
-                <bpel:from variable="stockMarketBuyStocksRequestElement" />
-                <bpel:to variable="stockMarketBuyStocksRequestMessage" part="parameters" />
+                <bpel:from variable="amsterdamStockMarketBuyStocksRequestElement" />
+                <bpel:to variable="amsterdamStockMarketBuyStocksRequestMessage" part="parameters" />
             </bpel:copy>
             </bpel:assign>
 
             <bpel:invoke
-                name="BuyStocksFromStockMarketInvoke"
-                partnerLink="BuyStocksFromStockMarketLink"
+                name="BuyStocksFromAmsterdamStockMarketInvoke"
+                partnerLink="BuyStocksFromAmsterdamStockMarketLink"
                 operation="BuyStocks"
-                inputVariable="stockMarketBuyStocksRequestMessage"
-                outputVariable="stockMarketBuyStocksResponseMessage"
+                inputVariable="amsterdamStockMarketBuyStocksRequestMessage"
+                outputVariable="amsterdamStockMarketBuyStocksResponseMessage"
             />
         </bpel:sequence>
         <bpel:sequence>
@@ -151,10 +151,10 @@
         </bpel:sequence>
     </bpel:flow>
 
-    <bpel:assign name="ParseStockMarketReponseMessage">
+    <bpel:assign name="ParseAmsterdamStockMarketReponseMessage">
         <bpel:copy>
-            <bpel:from variable="stockMarketBuyStocksResponseMessage" part="parameters" />
-            <bpel:to variable="stockMarketBuyStocksResponseElement" />
+            <bpel:from variable="amsterdamStockMarketBuyStocksResponseMessage" part="parameters" />
+            <bpel:to variable="amsterdamStockMarketBuyStocksResponseElement" />
         </bpel:copy>
     </bpel:assign>
 
@@ -170,7 +170,7 @@
         <bpel:to variable="custodianStoreStocksRequestElement" />
       </bpel:copy>
       <bpel:copy>
-        <bpel:from>$stockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
+        <bpel:from>$amsterdamStockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
         <bpel:to>$custodianStoreStocksRequestElement/arg0</bpel:to>
       </bpel:copy>
       <bpel:copy>
