@@ -51,8 +51,11 @@
 </operation>
 </binding>
 <service name="StockMarketImplService">
-<port name="StockMarketImplPort" binding="tns:StockMarketImplPortBinding">
-<soap:address location="http://127.0.0.1:8000/StockMarket"/>
-</port>
+    <port name="StockMarketImplPort" binding="tns:StockMarketImplPortBinding">
+        <soap:address location="http://127.0.0.1:8000/StockMarket"/>
+    </port>
+    <port name="LondonStockMarketPort" binding="tns:StockMarketImplPortBinding">
+        <soap:address location="http://127.0.0.1:8002/StockMarket"/>
+    </port>
 </service>
 </definitions>

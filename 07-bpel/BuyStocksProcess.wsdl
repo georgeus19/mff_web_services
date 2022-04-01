@@ -123,6 +123,10 @@
 		<plnk:role name="StockMarketRole" portType="sm:StockMarket"/>
 		<plnk:role name="BuyStocksFromStockMarketClientRole" portType="tns:StockMarketStocksPortType"/>
 	</plnk:partnerLinkType>
+	<plnk:partnerLinkType name="BuyStocksFromLondonStockMarketLinkType">
+		<plnk:role name="StockMarketRole" portType="sm:StockMarket"/>
+		<plnk:role name="BuyStocksFromStockMarketClientRole" portType="tns:StockMarketStocksPortType"/>
+	</plnk:partnerLinkType>
 	<plnk:partnerLinkType name="StoreStocksAtCustodianLinkType">
 		<plnk:role name="CustodianRole" portType="cust:Custodian"/>
 		<plnk:role name="StoreStocksAtCustodianClientRole" portType="tns:CustodianStocksPortType"/>

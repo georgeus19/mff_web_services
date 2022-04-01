@@ -20,7 +20,14 @@
       <service name="tnswsdl:StocksService" port="StockMarketStocksPort" />
     </provide>
 
-     <invoke partnerLink="StoreStocksAtCustodianLink">
+    <invoke partnerLink="BuyStocksFromLondonStockMarketLink">
+      <service name="sm:StockMarketImplService" port="LondonStockMarketPort" />
+    </invoke>
+    <provide partnerLink="BuyStocksFromLondonStockMarketLink">
+      <service name="tnswsdl:StocksService" port="StockMarketStocksPort" />
+    </provide>
+
+    <invoke partnerLink="StoreStocksAtCustodianLink">
       <service name="cust:CustodianImplService" port="CustodianImplPort" />
     </invoke>
     <provide partnerLink="StoreStocksAtCustodianLink">
