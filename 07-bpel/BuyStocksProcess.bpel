@@ -6,6 +6,7 @@
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:tnswsdl="http://BuyStocks/wsdl"
     xmlns:tnsxsd="http://BuyStocks/xsd"
+    xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
     queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
     expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
     xmlns:sm="http://stockmarket/"
@@ -46,16 +47,19 @@
     <bpel:variable name="amsterdamStockMarketBuyStocksResponseMessage" messageType="sm:BuyStocksResponse" />
     <bpel:variable name="amsterdamStockMarketBuyStocksResponseElement" element="sm:BuyStocksResponse" />
 
-
     <bpel:variable name="londonStockMarketBuyStocksRequestElement" element="sm:BuyStocks" />
     <bpel:variable name="londonStockMarketBuyStocksRequestMessage" messageType="sm:BuyStocks" />
     <bpel:variable name="londonStockMarketBuyStocksResponseMessage" messageType="sm:BuyStocksResponse" />
     <bpel:variable name="londonStockMarketBuyStocksResponseElement" element="sm:BuyStocksResponse" />
 
+    <bpel:variable name="amsterdamStockCountLeftToStore" type="xsd:int" />
+    <bpel:variable name="londonStockCountLeftToStore" type="xsd:int" />
+    
     <bpel:variable name="custodianStoreStocksRequestElement" element="cust:StoreStock" />
     <bpel:variable name="custodianStoreStocksRequestMessage" messageType="cust:StoreStock" />
     <bpel:variable name="custodianStoreStocksResponseMessage" messageType="cust:StoreStockResponse" />
     <bpel:variable name="custodianStoreStocksResponseElement" element="cust:StoreStockResponse" />
+
 
     <bpel:variable name="buyStocksOutputElement" element="tnswsdl:BuyStocksOut" />
     <bpel:variable name="buyStocksOutputMessage" messageType="tnswsdl:BuyStocksOutputMessage" />
@@ -76,6 +80,19 @@
     		<bpel:from variable="buyStocksInputMessage" part="parameters"/>
     		<bpel:to variable="buyStocksInElement"/>
     	</bpel:copy>
+    </bpel:assign>
+
+    <bpel:assign name="InitOutputElement">
+        <bpel:copy>
+            <bpel:from> 
+                <bpel:literal>
+                    <tns:BuyStocksOut>
+                        <tns:storeMessage></tns:storeMessage>
+                    </tns:BuyStocksOut>
+                </bpel:literal>
+            </bpel:from>
+            <bpel:to variable="buyStocksOutputElement" />
+        </bpel:copy>
     </bpel:assign>
 
     <bpel:flow>
@@ -113,6 +130,18 @@
                 inputVariable="amsterdamStockMarketBuyStocksRequestMessage"
                 outputVariable="amsterdamStockMarketBuyStocksResponseMessage"
             />
+
+            <bpel:assign name="ParseAmsterdamStockMarketReponseMessage">
+                <bpel:copy>
+                    <bpel:from variable="amsterdamStockMarketBuyStocksResponseMessage" part="parameters" />
+                    <bpel:to variable="amsterdamStockMarketBuyStocksResponseElement" />
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from>$amsterdamStockMarketBuyStocksResponseElement/return/count</bpel:from>
+                    <bpel:to variable="amsterdamStockCountLeftToStore"/>
+                </bpel:copy>
+            </bpel:assign>
+
         </bpel:sequence>
         <bpel:sequence>
             <bpel:assign name="InitLondonStockMarketBuyStocksRequestMessage">
@@ -148,70 +177,140 @@
                 inputVariable="londonStockMarketBuyStocksRequestMessage"
                 outputVariable="londonStockMarketBuyStocksResponseMessage"
             />
+
+            <bpel:assign name="ParseLondonStockMarketReponseMessage">
+                <bpel:copy>
+                    <bpel:from variable="londonStockMarketBuyStocksResponseMessage" part="parameters" />
+                    <bpel:to variable="londonStockMarketBuyStocksResponseElement" />
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from>$londonStockMarketBuyStocksResponseElement/return/count</bpel:from>
+                    <bpel:to variable="londonStockCountLeftToStore"/>
+                </bpel:copy>
+            </bpel:assign>
+
         </bpel:sequence>
     </bpel:flow>
 
-    <bpel:assign name="ParseAmsterdamStockMarketReponseMessage">
-        <bpel:copy>
-            <bpel:from variable="amsterdamStockMarketBuyStocksResponseMessage" part="parameters" />
-            <bpel:to variable="amsterdamStockMarketBuyStocksResponseElement" />
-        </bpel:copy>
-    </bpel:assign>
-
     <bpel:assign name="InitCustodianStoreStocksRequestMessage">
-      <bpel:copy>
-        <bpel:from>
-          <bpel:literal>
-            <cust:StoreStock>
-              <arg0></arg0>
-            </cust:StoreStock>
-          </bpel:literal>
-        </bpel:from>
-        <bpel:to variable="custodianStoreStocksRequestElement" />
-      </bpel:copy>
-      <bpel:copy>
-        <bpel:from>$amsterdamStockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
-        <bpel:to>$custodianStoreStocksRequestElement/arg0</bpel:to>
-      </bpel:copy>
-      <bpel:copy>
-        <bpel:from variable="custodianStoreStocksRequestElement" />
-        <bpel:to variable="custodianStoreStocksRequestMessage" part="parameters" />
-      </bpel:copy>
-    </bpel:assign>
-    
-    <bpel:invoke
-        name="StoreStocksAtCustodianInvoke"
-        partnerLink="StoreStocksAtCustodianLink"
-        operation="StoreStock"
-        inputVariable="custodianStoreStocksRequestMessage"
-        outputVariable="custodianStoreStocksResponseMessage"
-    />
-
-    <bpel:assign>
         <bpel:copy>
-            <bpel:from> 
+            <bpel:from>
                 <bpel:literal>
-                    <tns:BuyStocksOut>
-                        <tns:storeMessage></tns:storeMessage>
-                    </tns:BuyStocksOut>
-
+                    <cust:StoreStock>
+                        <arg0></arg0>
+                    </cust:StoreStock>
                 </bpel:literal>
             </bpel:from>
-            <bpel:to variable="buyStocksOutputElement" />
+            <bpel:to variable="custodianStoreStocksRequestElement" />
         </bpel:copy>
         <bpel:copy>
-            <bpel:from variable="custodianStoreStocksResponseMessage" part="parameters"/>
-            <bpel:to variable="custodianStoreStocksResponseElement"/>
+            <bpel:from>$amsterdamStockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
+            <bpel:to>$custodianStoreStocksRequestElement/arg0</bpel:to>
         </bpel:copy>
         <bpel:copy>
-            <bpel:from>$custodianStoreStocksResponseElement/return</bpel:from>
-            <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
-        </bpel:copy>
-        <bpel:copy>
-            <bpel:from variable="buyStocksOutputElement"/>
-            <bpel:to variable="buyStocksOutputMessage" part="parameters"/>
+            <bpel:from variable="custodianStoreStocksRequestElement" />
+            <bpel:to variable="custodianStoreStocksRequestMessage" part="parameters" />
         </bpel:copy>
     </bpel:assign>
+
+    <bpel:while>
+        <bpel:condition>$amsterdamStockCountLeftToStore &gt; 0</bpel:condition>
+        <bpel:sequence>
+            
+            <bpel:invoke
+                name="StoreStocksAtCustodianInvoke"
+                partnerLink="StoreStocksAtCustodianLink"
+                operation="StoreStock"
+                inputVariable="custodianStoreStocksRequestMessage"
+                outputVariable="custodianStoreStocksResponseMessage"
+            />
+
+            <bpel:assign>
+                <bpel:copy>
+                    <bpel:from variable="custodianStoreStocksResponseMessage" part="parameters"/>
+                    <bpel:to variable="custodianStoreStocksResponseElement"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from>concat($custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from>
+                    <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from variable="buyStocksOutputElement"/>
+                    <bpel:to variable="buyStocksOutputMessage" part="parameters"/>
+                </bpel:copy>
+            </bpel:assign>
+
+            <bpel:assign name="UpdateControlVariable">
+                <bpel:copy>
+                    <bpel:from>$amsterdamStockCountLeftToStore - 1</bpel:from>
+                    <bpel:to variable="amsterdamStockCountLeftToStore"/>
+                </bpel:copy>
+            </bpel:assign>
+
+        </bpel:sequence>
+
+    </bpel:while>
+
+    <bpel:assign name="InitCustodianStoreStocksRequestMessage">
+        <!-- <bpel:copy>
+            <bpel:from>
+                <bpel:literal>
+                    <cust:StoreStock>
+                        <arg0></arg0>
+                    </cust:StoreStock>
+                </bpel:literal>
+            </bpel:from>
+            <bpel:to variable="custodianStoreStocksRequestElement" />
+        </bpel:copy> -->
+        <bpel:copy>
+            <bpel:from>$londonStockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
+            <bpel:to>$custodianStoreStocksRequestElement/arg0</bpel:to>
+        </bpel:copy>
+        <bpel:copy>
+            <bpel:from variable="custodianStoreStocksRequestElement" />
+            <bpel:to variable="custodianStoreStocksRequestMessage" part="parameters" />
+        </bpel:copy>
+    </bpel:assign>
+
+    <bpel:while>
+        <bpel:condition>$londonStockCountLeftToStore &gt; 0</bpel:condition>
+        <bpel:sequence>
+    
+            <bpel:invoke
+                name="StoreStocksAtCustodianInvoke"
+                partnerLink="StoreStocksAtCustodianLink"
+                operation="StoreStock"
+                inputVariable="custodianStoreStocksRequestMessage"
+                outputVariable="custodianStoreStocksResponseMessage"
+            />
+
+            <bpel:assign>
+                <bpel:copy>
+                    <bpel:from variable="custodianStoreStocksResponseMessage" part="parameters"/>
+                    <bpel:to variable="custodianStoreStocksResponseElement"/>
+                </bpel:copy>
+                <bpel:copy>
+                    <!-- <bpel:from>concat($custodianStoreStocksResponseElement/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from> -->
+                    <bpel:from>concat($custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from>
+                    <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
+                </bpel:copy>
+                <bpel:copy>
+                    <bpel:from variable="buyStocksOutputElement"/>
+                    <bpel:to variable="buyStocksOutputMessage" part="parameters"/>
+                </bpel:copy>
+            </bpel:assign>
+
+            <bpel:assign name="UpdateControlVariable">
+                <bpel:copy>
+                    <bpel:from>$londonStockCountLeftToStore - 1</bpel:from>
+                    <bpel:to variable="londonStockCountLeftToStore"/>
+                </bpel:copy>
+            </bpel:assign>
+
+        </bpel:sequence>
+    </bpel:while>
+
+
     
     <bpel:reply name="ReplyBuyStocksOutputs"  
         partnerLink="BuyStocksLink"
