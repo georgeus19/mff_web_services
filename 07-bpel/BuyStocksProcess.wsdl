@@ -111,7 +111,6 @@
 		</wsdl:operation>
 	</wsdl:binding>
 
-
 	<wsdl:service name="StocksService">
 		<wsdl:port name="StocksPort" binding="tns:StocksSOAPBinding">
 			<soap:address location="http://localhost:8080/ode/processes/Stocks"/>
