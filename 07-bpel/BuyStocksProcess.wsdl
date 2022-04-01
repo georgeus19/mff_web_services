@@ -23,11 +23,19 @@
             <xsd:element name="BuyStocksIn">
 		        <xsd:complexType>
 					<xsd:sequence>
-						<xsd:element name="stock" minOccurs="1" maxOccurs="unbounded">
+						<xsd:element name="fromAmsterdam" minOccurs="1" maxOccurs="1">
 							<xsd:complexType>
 								<xsd:sequence>
-									<xsd:element minOccurs="1" name="stockId" type="xsd:int"/>
-									<xsd:element minOccurs="1" name="stockCount" type="xsd:int"/>
+									<xsd:element minOccurs="1" maxOccurs="1" name="stockId" type="xsd:int"/>
+									<xsd:element minOccurs="1" maxOccurs="1" name="stockCount" type="xsd:int"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="fromLondon" minOccurs="1" maxOccurs="1">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element minOccurs="1" maxOccurs="1" name="stockId" type="xsd:int"/>
+									<xsd:element minOccurs="1" maxOccurs="1" name="stockCount" type="xsd:int"/>
 								</xsd:sequence>
 							</xsd:complexType>
 						</xsd:element>

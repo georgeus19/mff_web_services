@@ -110,11 +110,11 @@
                 <bpel:to variable="amsterdamStockMarketBuyStocksRequestElement" />
             </bpel:copy>
             <bpel:copy>
-                <bpel:from>$buyStocksInElement/stock[1]/stockId</bpel:from>
+                <bpel:from>$buyStocksInElement/fromAmsterdam[1]/stockId</bpel:from>
                 <bpel:to>$amsterdamStockMarketBuyStocksRequestElement/arg0</bpel:to>
             </bpel:copy>
             <bpel:copy>
-                <bpel:from>$buyStocksInElement/stock[1]/stockCount</bpel:from>
+                <bpel:from>$buyStocksInElement/fromAmsterdam[1]/stockCount</bpel:from>
                 <bpel:to>$amsterdamStockMarketBuyStocksRequestElement/arg1</bpel:to>
             </bpel:copy>
             <bpel:copy>
@@ -157,11 +157,11 @@
                 <bpel:to variable="londonStockMarketBuyStocksRequestElement" />
             </bpel:copy>
             <bpel:copy>
-                <bpel:from>$buyStocksInElement/stock[1]/stockId</bpel:from>
+                <bpel:from>$buyStocksInElement/fromLondon[1]/stockId</bpel:from>
                 <bpel:to>$londonStockMarketBuyStocksRequestElement/arg0</bpel:to>
             </bpel:copy>
             <bpel:copy>
-                <bpel:from>$buyStocksInElement/stock[1]/stockCount</bpel:from>
+                <bpel:from>$buyStocksInElement/fromLondon[1]/stockCount</bpel:from>
                 <bpel:to>$londonStockMarketBuyStocksRequestElement/arg1</bpel:to>
             </bpel:copy>
             <bpel:copy>
@@ -231,7 +231,7 @@
                     <bpel:to variable="custodianStoreStocksResponseElement"/>
                 </bpel:copy>
                 <bpel:copy>
-                    <bpel:from>concat($custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from>
+                    <bpel:from>concat($buyStocksOutputElement/tns:storeMessage, $custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return)</bpel:from>
                     <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
                 </bpel:copy>
                 <bpel:copy>
@@ -291,7 +291,7 @@
                 </bpel:copy>
                 <bpel:copy>
                     <!-- <bpel:from>concat($custodianStoreStocksResponseElement/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from> -->
-                    <bpel:from>concat($custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return, $buyStocksOutputElement/tns:storeMessage)</bpel:from>
+                    <bpel:from>concat($buyStocksOutputElement/tns:storeMessage, $custodianStoreStocksResponseMessage/parameters/cust:StoreStockResponse/return)</bpel:from>
                     <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
                 </bpel:copy>
                 <bpel:copy>
