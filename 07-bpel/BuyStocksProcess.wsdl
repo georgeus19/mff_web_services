@@ -8,12 +8,16 @@
 	xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
 	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
 	xmlns:sm="http://stockmarket/"
+	xmlns:cust="http://custodian/"
 	targetNamespace="http://BuyStocks/wsdl"
 	>
 
 	<wsdl:import location="StockMarket.wsdl"
 	namespace="http://stockmarket/" />
   
+	<wsdl:import location="Custodian.wsdl"
+	namespace="http://custodian/" />
+
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://BuyStocks/xsd">
             <xsd:element name="BuyStocksIn">
@@ -60,6 +64,12 @@
 		</wsdl:operation>
 	</wsdl:portType>
 
+	<wsdl:portType name="CustodianStocksPortType">
+		<wsdl:operation name="StoreStocksAtCustodian">
+			<wsdl:input name="StoreStocksIn" message="cust:StoreStockResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
 	<wsdl:binding name="StocksSOAPBinding" type="tns:StocksPortType">
 		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 		<wsdl:operation name="BuyStocksOperation">
@@ -83,6 +93,16 @@
 		</wsdl:operation>
 	</wsdl:binding>
 
+	<wsdl:binding name="CustodianStocksSOAPBinding" type="tns:CustodianStocksPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="StoreStocksAtCustodian">
+			<soap:operation soapAction="urn:StoreStocksAtCustodianResponseOperation" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+
 
 	<wsdl:service name="StocksService">
 		<wsdl:port name="StocksPort" binding="tns:StocksSOAPBinding">
@@ -91,16 +111,20 @@
 		<wsdl:port name="StockMarketStocksPort" binding="tns:StockMarketStocksSOAPBinding">
 			<soap:address location="http://localhost:8080/ode/processes/StockMarketStocks"/>
 		</wsdl:port>
+		<wsdl:port name="CustodianStocksPort" binding="tns:CustodianStocksSOAPBinding">
+			<soap:address location="http://localhost:8080/ode/processes/CustodianStocks"/>
+		</wsdl:port>
 	</wsdl:service>
 
-	<!--
-    Declares a link type connecting a client with this service via CalcPortType 
-  -->
 	<plnk:partnerLinkType name="BuyStocksLinkType">
 		<plnk:role name="BuyStocksExecutorRole" portType="tns:StocksPortType"/>
 	</plnk:partnerLinkType>
 	<plnk:partnerLinkType name="BuyStocksFromStockMarketLinkType">
 		<plnk:role name="StockMarketRole" portType="sm:StockMarket"/>
 		<plnk:role name="BuyStocksFromStockMarketClientRole" portType="tns:StockMarketStocksPortType"/>
+	</plnk:partnerLinkType>
+	<plnk:partnerLinkType name="StoreStocksAtCustodianLinkType">
+		<plnk:role name="CustodianRole" portType="cust:Custodian"/>
+		<plnk:role name="StoreStocksAtCustodianClientRole" portType="tns:CustodianStocksPortType"/>
 	</plnk:partnerLinkType>
 </wsdl:definitions>

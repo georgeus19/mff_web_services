@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. -->
+<xs:schema xmlns:tns="http://custodian/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://custodian/">
+
+<xs:element name="RemoveStock" type="tns:RemoveStock"/>
+
+<xs:element name="RemoveStockResponse" type="tns:RemoveStockResponse"/>
+
+<xs:element name="StoreStock" type="tns:StoreStock"/>
+
+<xs:element name="StoreStockResponse" type="tns:StoreStockResponse"/>
+
+<xs:complexType name="RemoveStock">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RemoveStockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StoreStock">
+<xs:sequence>
+<xs:element name="arg0" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="StoreStockResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -9,6 +9,7 @@
     queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
     expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
     xmlns:sm="http://stockmarket/"
+    xmlns:cust="http://custodian/"
     >
 
   <bpel:import location="BuyStocksProcess.wsdl"
@@ -23,23 +24,28 @@
       partnerLinkType="tnswsdl:BuyStocksFromStockMarketLinkType" 
       myRole="BuyStocksFromStockMarketClientRole"
       partnerRole="StockMarketRole" />
+    <bpel:partnerLink name="StoreStocksAtCustodianLink" 
+      partnerLinkType="tnswsdl:StoreStocksAtCustodianLinkType" 
+      myRole="StoreStocksAtCustodianClientRole"
+      partnerRole="CustodianRole" />
   </bpel:partnerLinks>
 
   <bpel:variables>
     <bpel:variable name="buyStocksInputMessage" messageType="tnswsdl:BuyStocksInputMessage" />
     <bpel:variable name="buyStocksInElement" element="tnswsdl:BuyStocksIn" />
+
     <bpel:variable name="stockMarketBuyStocksRequestElement" element="sm:BuyStocks" />
     <bpel:variable name="stockMarketBuyStocksRequestMessage" messageType="sm:BuyStocks" />
     <bpel:variable name="stockMarketBuyStocksResponseMessage" messageType="sm:BuyStocksResponse" />
     <bpel:variable name="stockMarketBuyStocksResponseElement" element="sm:BuyStocksResponse" />
 
+    <bpel:variable name="custodianStoreStocksRequestElement" element="cust:StoreStock" />
+    <bpel:variable name="custodianStoreStocksRequestMessage" messageType="cust:StoreStock" />
+    <bpel:variable name="custodianStoreStocksResponseMessage" messageType="cust:StoreStockResponse" />
+    <bpel:variable name="custodianStoreStocksResponseElement" element="cust:StoreStockResponse" />
 
-    <!-- <variable name="inputNumber" type="xsd:integer" />
-    <variable name="multiplyRequestElement" element="c:Multiply"/>
-    <variable name="multiplyRequestMessage" messageType="c:MultiplySoapIn"/>
-    <variable name="multiplyResponseMessage" messageType="c:MultiplySoapOut"/>
-    <variable name="multiplyResponseElement" element="c:MultiplyResponse"/> -->
-    <bpel:variable name="outputMessage" messageType="tnswsdl:BuyStocksOutputMessage" />
+    <bpel:variable name="buyStocksOutputElement" element="tnswsdl:BuyStocksOut" />
+    <bpel:variable name="buyStocksOutputMessage" messageType="tnswsdl:BuyStocksOutputMessage" />
   </bpel:variables>
   
   <bpel:sequence>
@@ -93,30 +99,66 @@
         inputVariable="stockMarketBuyStocksRequestMessage"
         outputVariable="stockMarketBuyStocksResponseMessage"
     />
-    
 
-    <!-- <assign name="CopyAssign">
-      <copy>
-        <from variable="multiplyResponseMessage" part="parameters"/>
-        <to variable="multiplyResponseElement"/>
-      </copy>
-      <copy>
-        <from>$multiplyResponseElement/c:MultiplyResult</from>
-        <to variable="outputNumber" part="parameters" />
-      </copy>
-    </assign> -->
+    <bpel:assign name="ParseStockMarketReponseMessage">
+        <bpel:copy>
+            <bpel:from variable="stockMarketBuyStocksResponseMessage" part="parameters" />
+            <bpel:to variable="stockMarketBuyStocksResponseElement" />
+        </bpel:copy>
+    </bpel:assign>
+
+    <bpel:assign name="InitCustodianStoreStocksRequestMessage">
+      <bpel:copy>
+        <bpel:from>
+          <bpel:literal>
+            <cust:StoreStock>
+              <arg0></arg0>
+            </cust:StoreStock>
+          </bpel:literal>
+        </bpel:from>
+        <bpel:to variable="custodianStoreStocksRequestElement" />
+      </bpel:copy>
+      <bpel:copy>
+        <bpel:from>$stockMarketBuyStocksResponseElement/return/stock/id</bpel:from>
+        <bpel:to>$custodianStoreStocksRequestElement/arg0</bpel:to>
+      </bpel:copy>
+      <bpel:copy>
+        <bpel:from variable="custodianStoreStocksRequestElement" />
+        <bpel:to variable="custodianStoreStocksRequestMessage" part="parameters" />
+      </bpel:copy>
+    </bpel:assign>
+    
+    <bpel:invoke
+        name="StoreStocksAtCustodianInvoke"
+        partnerLink="StoreStocksAtCustodianLink"
+        operation="StoreStock"
+        inputVariable="custodianStoreStocksRequestMessage"
+        outputVariable="custodianStoreStocksResponseMessage"
+    />
 
     <bpel:assign>
         <bpel:copy>
             <bpel:from> 
                 <bpel:literal>
                     <tns:BuyStocksOut>
-                        <tns:storeMessage>Stored Dummy</tns:storeMessage>
+                        <tns:storeMessage></tns:storeMessage>
                     </tns:BuyStocksOut>
 
                 </bpel:literal>
             </bpel:from>
-            <bpel:to variable="outputMessage" part="parameters"/>
+            <bpel:to variable="buyStocksOutputElement" />
+        </bpel:copy>
+        <bpel:copy>
+            <bpel:from variable="custodianStoreStocksResponseMessage" part="parameters"/>
+            <bpel:to variable="custodianStoreStocksResponseElement"/>
+        </bpel:copy>
+        <bpel:copy>
+            <bpel:from>$custodianStoreStocksResponseElement/return</bpel:from>
+            <bpel:to>$buyStocksOutputElement/tns:storeMessage</bpel:to>
+        </bpel:copy>
+        <bpel:copy>
+            <bpel:from variable="buyStocksOutputElement"/>
+            <bpel:to variable="buyStocksOutputMessage" part="parameters"/>
         </bpel:copy>
     </bpel:assign>
     
@@ -124,7 +166,7 @@
         partnerLink="BuyStocksLink"
         portType="tnswsdl:StocksPortType" 
         operation="BuyStocksOperation"
-        variable="outputMessage" />
+        variable="buyStocksOutputMessage" />
     
   </bpel:sequence>
   

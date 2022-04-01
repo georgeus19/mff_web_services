@@ -4,6 +4,7 @@
     xmlns:tnsbpel="http://BuyStocks/bpel"
     xmlns:tnswsdl="http://BuyStocks/wsdl"
     xmlns:sm="http://stockmarket/"
+    xmlns:cust="http://custodian/"
     >
 
   <process name="tnsbpel:BuyStocksProcess">
@@ -11,11 +12,19 @@
     <provide partnerLink="BuyStocksLink">
       <service name="tnswsdl:StocksService" port="StocksPort" />
     </provide>
+
     <invoke partnerLink="BuyStocksFromStockMarketLink">
       <service name="sm:StockMarketImplService" port="StockMarketImplPort" />
     </invoke>
     <provide partnerLink="BuyStocksFromStockMarketLink">
       <service name="tnswsdl:StocksService" port="StockMarketStocksPort" />
+    </provide>
+
+     <invoke partnerLink="StoreStocksAtCustodianLink">
+      <service name="cust:CustodianImplService" port="CustodianImplPort" />
+    </invoke>
+    <provide partnerLink="StoreStocksAtCustodianLink">
+      <service name="tnswsdl:StocksService" port="CustodianStocksPort" />
     </provide>
   </process>
 
