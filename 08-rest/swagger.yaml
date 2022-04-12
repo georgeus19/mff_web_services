@@ -1,0 +1,239 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Custodiab API
+  description: API for working with users and their stocks on custodian server.
+
+schemes:
+- http
+host: localhost:8080
+basePath: /custodianRest/rest
+
+securityDefinitions:
+  UserSecurity:
+    type: basic
+
+security:
+  - UserSecurity: []
+
+paths:
+  /users:
+    get:
+      description: Get collection of users using custodian service.
+      produces:
+      - application/xml
+      - application/json
+      responses:
+        200:
+          description: Successfully returned a list of artists 
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: "#/definitions/user"
+            xml:
+              name: userList
+    put:
+      description: Create new users collection.
+      consumes:
+      - application/xml
+      produces:
+      - application/xml
+      - application/json
+      parameters:
+        - name: userList
+          in: body
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: "#/definitions/user"
+            xml:
+              name: userList
+      responses:
+        204:
+          description: Users list uploaded.
+    delete:
+      description: Delete collection of users.
+      produces:
+      - application/xml
+      - application/json
+      responses:
+        204:
+          description: Successfully delete collection of users.
+    post:
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        405:
+          description: Post method is not allowed.
+  /users/{user}:
+    get:
+      description: Obtain information about a user.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        200:
+          description: Successfully returned a user.
+          schema:
+            $ref: "#/definitions/user"
+        404:
+          description: User not found.
+          schema:
+            $ref: "#/definitions/error"
+    put:
+      description: Create a new user.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+        - name: user
+          in: body
+          schema:
+           $ref: "#/definitions/user"
+      consumes:
+      - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+          201:
+            description: Successfully created a user.
+          204:
+            description: User was replaced,
+          409:
+            description: User ids did not match.
+            schema:
+              $ref: "#/definitions/error"
+    delete:
+      description: Delete user.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        204:
+          description: Successfully delete collection of users.
+        404:
+          description: User not found.
+          schema:
+            $ref: "#/definitions/error"
+    post:
+      description: Change user's first name and surname.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+        - name: user
+          in: body
+          schema:
+           $ref: "#/definitions/user"
+      consumes:
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        204:
+          description: Successfully changed fullname and surname.
+        404:
+          description: User not found.
+          schema:
+            $ref: "#/definitions/error"
+        409:
+            description: Invalid values for firstname of surname
+            schema:
+              $ref: "#/definitions/error"
+  /users/{user}/stocks:
+    get:
+      description: Obtain all stored stocks of user.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successfully returned a user.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/stock"
+        404:
+          description: User not found.
+          schema:
+            $ref: "#/definitions/error"
+  /users/{user}/stocks/{stock}:
+    get:
+      description: Obtain all stored stocks of user.
+      parameters:
+        - name: user
+          in: path 
+          type: integer
+          required: true
+        - name: stock
+          in: path 
+          type: string
+          required: true
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        200:
+          description: Successfully returned a stock of the given user.
+          schema:
+            $ref: "#/definitions/stock"
+        404:
+          description: User or stock not found.
+          schema:
+            $ref: "#/definitions/error"
+ 
+definitions:
+  user:
+    type: "object"
+    properties:
+      ID:
+        type: "integer"
+        format: "int32"
+      firstname:
+        type: "string"
+      surname:
+        type: "string"
+      stocks:
+        type: "array"
+        xml:
+          name: "stocks"
+        items:
+          $ref: "#/definitions/stock"
+  stock:
+    type: "object"
+    properties:
+      company:
+        type: "string"
+      count:
+        type: "integer"
+        format: "int32"
+  error:
+    type: string
+    xml: 
+      name: error
+      wrapped: true
