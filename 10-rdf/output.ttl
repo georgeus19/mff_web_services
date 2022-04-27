@@ -1,0 +1,42 @@
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <https://schema.org/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix people: <http://www.example.org/people/> .
+@prefix stocks: <http://www.example.org/stocks/> .
+
+people:kostka-jan-3422 rdf:type schema:Person .
+people:kostka-jan-3422 schema:givenName "Jan"^^xsd:string .
+people:kostka-jan-3422 schema:familyName "Kostka"^^xsd:string .
+
+people:kostka-jan-3422 gr:owns stocks:stock-1 .
+stocks:stock-1 a stocks:Stock .
+stocks:stock-1 stocks:of <https://www.amazon.com/> .
+stocks:stock-1 gr:name "Amazon"@en .
+
+people:kostka-jan-3422 gr:owns stocks:stock-2 .
+stocks:stock-2 a stocks:Stock .
+stocks:stock-2 stocks:of <https://www.amazon.com/> .
+stocks:stock-2 gr:name "Amazon"@en .
+
+people:kostka-jan-3422 gr:owns stocks:stock-3 .
+stocks:stock-3 a stocks:Stock .
+stocks:stock-3 stocks:of <https://www.google.com/> .
+stocks:stock-3 gr:name "Google"@en .
+
+people:kostka-jan-3422 gr:owns stocks:stock-34 .
+stocks:stock-34 a stocks:Stock .
+stocks:stock-34 stocks:of <https://www.google.com/> .
+stocks:stock-34 gr:name "Google"@en .
+
+people:kostka-jan-3422 gr:owns stocks:stock-42 .
+stocks:stock-42 a stocks:Stock .
+stocks:stock-42 stocks:of <https://www.google.com/> .
+stocks:stock-42 gr:name "Google"@en .
+
+people:kostka-jan-3422 gr:owns stocks:stock-420 .
+stocks:stock-420 a stocks:Stock .
+stocks:stock-420 stocks:of <https://www.cez.cz/> .
+stocks:stock-420 gr:name "CEZ"@en .
+

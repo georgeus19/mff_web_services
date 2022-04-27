@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+I modified the custodian service to have more data on the output.
+The web service now also returns all stocks that a person has stored within the custodian framework.
+-->
+
+<Person id="kostka-jan-3422">
+    <GivenName>Jan</GivenName>
+    <FamilyName>Kostka</FamilyName>
+    <StoredStocks>
+        <Stock id="stock-1"><Company url="https://www.amazon.com/">Amazon</Company></Stock>
+        <Stock id="stock-2"><Company url="https://www.amazon.com/">Amazon</Company></Stock>
+        <Stock id="stock-3"><Company url="https://www.google.com/">Google</Company></Stock>
+        <Stock id="stock-34"><Company url="https://www.google.com/">Google</Company></Stock>
+        <Stock id="stock-42"><Company url="https://www.google.com/">Google</Company></Stock>
+        <Stock id="stock-420"><Company url="https://www.cez.cz/">CEZ</Company></Stock>
+    </StoredStocks>
+</Person>
