@@ -1,0 +1,63 @@
+@prefix stocks: <http://example.com/stocks/> .
+@prefix schema: <https://schema.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+stocks:stockOffer rdf:type rdfs:Class ;
+    rdfs:subClassOf schema:Offer ;
+    rdfs:comment "Subclass of schema Offer for trading stocks"@en ;
+    rdfs:label "Stock Offer"@en ;
+    rdfs:seeAlso schema:Offer .
+
+stocks:broker 
+    rdf:type rdf:Property ;
+    rdfs:domain stocks:stockOffer ;
+    rdfs:range schema:Organization ;
+    rdfs:comment "Broker organization in stockOffer"@en ;
+    rdfs:label "broker"@en ;
+    rdfs:seeAlso stocks:stockOffer .
+
+stocks:brokerFee 
+    rdf:type rdf:Property ;
+    rdfs:domain stocks:stockOffer ;
+    rdfs:range schema:PriceSpecification ;
+    rdfs:comment "Broker fee in stockOffer"@en ;
+    rdfs:label "broker Fee"@en ;
+    rdfs:seeAlso stocks:stockOffer .
+
+stocks:StockInvoice
+    rdf:type rdfs:Class ;
+    rdfs:subClassOf schema:Invoice ;
+    rdfs:comment "Stock Invoice of stocks trades."@en ;
+    rdfs:label "Stock Invoice"@en ;
+    rdfs:seeAlso schema:Invoice .
+
+stocks:paidPrice 
+    rdf:type rdf:Property ;
+    rdfs:domain stocks:StockInvoice ;
+    rdfs:range schema:PriceSpecification ;
+    rdfs:comment "Actual paid price to the provider"@en ;
+    rdfs:label "paid Price"@en ;
+    rdfs:seeAlso stocks:StockInvoice .
+
+stocks:brokerFee 
+    rdf:type rdf:Property ;
+    rdfs:domain stocks:StockInvoice ;
+    rdfs:range schema:PriceSpecification ;
+    rdfs:comment "Fee paid to the broker in an invoice."@en ;
+    rdfs:label "broker Fee"@en ;
+    rdfs:seeAlso stocks:StockInvoice .
+
+stocks:Stock
+    rdf:type rdfs:Class ;
+    rdfs:subClassOf schema:Thing ;
+    rdfs:comment "Stock of an organization on stock market."@en ;
+    rdfs:label "Stock"@en .
+
+stocks:of 
+    rdf:type rdf:Property ;
+    rdfs:domain stocks:Stock ;
+    rdfs:range schema:Organization ;
+    rdfs:comment "What company a stock is of."@en ;
+    rdfs:label "Of"@en ;
+    rdfs:seeAlso stocks:Stock .
