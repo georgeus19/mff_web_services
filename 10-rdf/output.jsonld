@@ -1,0 +1,79 @@
+{
+    "@context": {
+        "@version": 1.1,
+        "@vocab": "http://www.example.org/",
+        "@base": "http://www.example.org/",
+        "schema": "https://schema.org/",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "gr": "http://purl.org/goodrelations/v1#",
+        "people": "http://www.example.org/people/",
+        "stocks": "http://www.example.org/stocks/",
+        "Person": "schema:Person",
+        "Url": "@id",
+        "Id" : "@id",
+        "Type": "@type",
+        "GivenName": "schema:givenName",
+        "FamilyName": "schema:familyName",
+        "Owns": "gr:owns",
+        "Stock": "stocks:Stock",
+        "Of": "stocks:of",
+        "Name": { "@id": "gr:name", "@language":"en" }
+    },
+    "Person": {
+        "Id": "people/kostka-jan-3422",
+        "Type": "Person",
+        "GivenName": "Jan",
+        "FamilyName": "Kostka",
+        "Owns": [
+            {
+                "Id": "stocks/stock-1",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.amazon.com/"
+                },
+                "Name": "Amazon"
+            },
+            {
+                "Id": "stocks/stock-2",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.amazon.com/"
+                },
+                "Name": "Amazon"
+            },
+            {
+                "Id": "stocks/stock-3",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.google.com/"
+                },
+                "Name": "Google"
+            },
+            {
+                "Id": "stocks/stock-34",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.google.com/"
+                },
+                "Name": "Google"
+            },
+            {
+                "Id": "stocks/stock-42",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.google.com/"
+                },
+                "Name": "Google"
+            },
+            {
+                "Id": "stocks/stock-420",
+                "Type": "Stock",
+                "Of": {
+                    "Url": "https://www.cez.cz/"
+                },
+                "Name": "CEZ"
+            }
+        ]
+    }
+}

@@ -27,13 +27,6 @@ stocks:<xsl:value-of select="@id"/> gr:name "<xsl:value-of select="Company"/>"@e
    
     </xsl:template>
    
-    <!-- <xsl:template match="Person/GivenName">
-        <xsl:variable name="currentURI" select="concat($prefix, file)"/>
-    &lt;<xsl:value-of select="$currentURI"/>&gt; a dcterms:MediaType ;<xsl:if test="@date">
-        dcterms:issued &quot;<xsl:value-of select="@date"/>&quot;^^xsd:date ;</xsl:if>
-        dcterms:title &quot;<xsl:value-of select="file"/>&quot; .
-    </xsl:template> -->
-   
     <xsl:template match="text()"/>
    
 </xsl:stylesheet>
